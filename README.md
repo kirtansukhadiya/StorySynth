@@ -5,5 +5,4 @@ This software is perfect for book lovers of any genre. It provides detailed summ
 This will have feature as in summary of book, character details, rating of the book, and where you can get it.
 
 ### Future model (vision)
-account creation
-Interaction between users
+Account creation, Interaction between users
