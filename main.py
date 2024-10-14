@@ -1,6 +1,8 @@
 from proxy import *
 from bs4 import BeautifulSoup #for webscrapping
 import requests 
+from openai import OpenAI #for chatGPT
+import openai
 
 
 def book_name(): 
@@ -19,12 +21,28 @@ def book_name():
         book_info_needed()
         book_name()
 
+secret_key = openai.api_key = str(os.getenv("OPENAI_SECRET_KEY"))
+
+
+def Summary(x): #in this function we will send promt to chatgpt and return the summary made by chatgpt.
+    Chat_For_Summary = openai.chat.completions.create(
+        messages=[
+            {
+                "role": "user",
+                "content": ("summary of book " + x),
+            }
+        ],
+        model="gpt-3.5-turbo",)
+    
+
 def book_info_needed():
     global Book_Name, options
     Book_Name = input("Enter the book name: ", ) #Name of the book you want to know about
-    options = input("What output do desire?\n1.Details\n=>") #what do you want to know about
+    options = input("What output do desire?\n1.Details\n2.Summary\n=>") #what do you want to know about
     if options == "1" or "Details" or "details" :
         book_name()
+    elif options == "2" or "Summary" or "summary":
+        Summary(Book_Name)
     else:
         pass
 
