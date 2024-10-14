@@ -6,3 +6,6 @@ This will have feature as in summary of book, character details, rating of the b
 
 ### Future model (vision)
 Account creation, Interaction between users
+
+###Limitations
+Need to buy OpenAI API account to use ChatGPT 
