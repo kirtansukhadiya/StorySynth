@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup #for webscrapping
 import requests 
 from openai import OpenAI #for chatGPT
 import openai
-
+client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
 def book_name(): 
     try:    #if the book name matches to any book in the website this block will get run
@@ -26,37 +26,32 @@ def book_name():
         print(publish_date_text)
 
     except AttributeError: #if there is no book of the same name of book on website the program will start again using this block of code
+        print("No book found:)\nPlease re-enter the name with corret spelling")
         book_info_needed()
         book_name()
 
-secret_key = openai.api_key = str(os.getenv("OPENAI_SECRET_KEY"))
+secret_key = openai.api_key = str(os.getenv("OPENAI_API_KEY")) #setting the secret key for openai api
 
-
-def Summary(x): #in this function we will send promt to chatgpt and return the summary made by chatgpt.
-    response = openai.chat.completions.create(
-        model="gpt-3.5-turbo",
+def Summary(x):
+    response = client.chat.completions.create(
+        model="gpt-4.1",
         messages=[
-            {
-                "role": "user",
-                "content": (" give me summary of book " + x),
-            }
+            {"role": "user", "content": f"Give a short summary of the book '{x}'."}
         ]
-
     )
-    answer = response['choices'][0]['message']['content']
-    print(answer)
-    
+    print("Summary:", response.choices[0].message.content)
 
 def book_info_needed():
     global Book_Name, options
-    Book_Name = input("Enter the book name: ", ) #Name of the book you want to know about
+    Book_Name = input("Enter the book name: ")
     Book_Name = Book_Name.lower()
-    options = input("What output do desire?\n1.Details\n2.Summary\n=>") #what do you want to know about
-    if options == "1" or "Details" or "details" :
+    options = input("What output do you desire?\n1. Details\n2. Summary\n=> ").strip().lower()
+
+    if options == "1" or options == "details":
         book_name()
-    elif options == "2" or "Summary" or "summary":
+    elif options == "2" or options == "summary":
         Summary(Book_Name)
     else:
-        pass
+        print("Invalid option. Please enter '1' or '2'.")
 
 book_info_needed() #starts the program
